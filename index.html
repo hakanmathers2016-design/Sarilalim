@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sarılalım</title>
+  <style>
+    :root{
+      --bg1:#0b1020; --bg2:#1a1030;
+      --pink:#ff4d8d; --pink2:#ff7ab3;
+      --card: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.18);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.7);
+    }
+    html,body{height:100%; margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;}
+    body{
+      background: radial-gradient(1200px 800px at 20% 10%, #2a1b55 0%, transparent 60%),
+                  radial-gradient(1000px 700px at 90% 30%, #3a1140 0%, transparent 55%),
+                  linear-gradient(160deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      overflow:hidden;
+    }
+    .wrap{
+      position:relative; height:100%; width:100%;
+      display:flex; align-items:center; justify-content:center;
+      padding: 18px;
+      box-sizing:border-box;
+    }
+    .panel{
+      position:absolute; top:16px; left:50%; transform:translateX(-50%);
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 12px 14px;
+      max-width: 900px;
+      width: calc(100% - 32px);
+      box-sizing:border-box;
+    }
+    .title{font-weight:700; letter-spacing:.2px}
+    .hint{font-size:13px; color:var(--muted); margin-top:4px; line-height:1.35}
+    .stage{
+      position:relative;
+      width:min(920px, 96vw);
+      height:min(560px, 70vh);
+      border-radius: 28px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .spark{
+      position:absolute; inset:-40%;
+      background: radial-gradient(circle at 30% 40%, rgba(255,77,141,.25), transparent 50%),
+                  radial-gradient(circle at 70% 60%, rgba(255,122,179,.18), transparent 55%);
+      filter: blur(20px);
+      animation: float 8s ease-in-out infinite;
+      opacity:.9;
+    }
+    @keyframes float{
+      0%,100%{transform: translate(0,0) scale(1);}
+      50%{transform: translate(2%, -2%) scale(1.02);}
+    }
+
+    .person{
+      position:absolute;
+      width: 150px; height: 150px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.22);
+      display:flex; align-items:center; justify-content:center;
+      user-select:none;
+      touch-action:none;
+      cursor: grab;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      transition: transform .18s ease;
+    }
+    .person:active{cursor: grabbing; transform: scale(1.03);}
+    .emoji{font-size:64px; filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));}
+    .tag{
+      position:absolute; bottom:-28px; left:50%; transform:translateX(-50%);
+      font-size: 13px; color: rgba(255,255,255,.85);
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space:nowrap;
+    }
+
+    .heart{
+      position:absolute;
+      left:50%; top:50%;
+      transform: translate(-50%,-50%) scale(0);
+      opacity:0;
+      pointer-events:none;
+      text-align:center;
+      transition: transform .35s cubic-bezier(.2,1.2,.2,1), opacity .25s ease;
+    }
+    .heart.show{
+      transform: translate(-50%,-55%) scale(1);
+      opacity:1;
+    }
+    .heart .big{
+      font-size: 150px;
+      line-height: 1;
+      color: var(--pink);
+      text-shadow: 0 18px 55px rgba(255,77,141,.35);
+      animation: beat 1.05s ease-in-out infinite;
+    }
+    @keyframes beat{
+      0%,100%{transform: scale(1);}
+      45%{transform: scale(1.08);}
+    }
+    .note{
+      margin-top: 10px;
+      display:inline-block;
+      max-width: min(680px, 86vw);
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-size: 16px;
+      color: rgba(255,255,255,.92);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .note small{display:block; margin-top:6px; color: rgba(255,255,255,.72); font-size: 13px}
+
+    .footer{
+      position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+      font-size: 12px; color: rgba(255,255,255,.6);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 8px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      display:flex; gap:10px; align-items:center;
+      max-width: calc(100% - 24px);
+      box-sizing:border-box;
+    }
+    .btn{
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.9);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{background: rgba(255,255,255,.12);}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="panel">
+      <div class="title">Uzakta olsak da… burada sarılabiliyoruz.</div>
+      <div class="hint">
+        İki kişiyi parmağınla/mausunla sürükle. Yaklaştırınca <b>sarılma</b> olur, kocaman bir <b>kalp</b> çıkar ve not görünür.
+      </div>
+    </div>
+
+    <div class="stage" id="stage" aria-label="Sarılma sahnesi">
+      <div class="spark"></div>
+
+      <div class="person" id="p1" style="left: 18%; top: 48%;">
+        <div class="emoji">🧍</div>
+        <div class="tag">Sen</div>
+      </div>
+
+      <div class="person" id="p2" style="left: 66%; top: 48%;">
+        <div class="emoji">🧍‍♀️</div>
+        <div class="tag">O</div>
+      </div>
+
+      <div class="heart" id="heart">
+        <div class="big">❤️</div>
+        <div class="note" id="note">
+          Gel buraya… sarıl. Ağlayacaksan da birlikte ağlayalım. Ben buradayım.
+          <small>İstersen bu notu değiştir: dosyada <code>SPECIAL_NOTE</code> yazan yeri düzenle.</small>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>İpucu: Telefonla görüntülü aramada ikiniz de aynı anda açın.</span>
+        <button class="btn" id="resetBtn">Sıfırla</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const stage = document.getElementById("stage");
+  const p1 = document.getElementById("p1");
+  const p2 = document.getElementById("p2");
+  const heart = document.getElementById("heart");
+
+  // SPECIAL_NOTE (istersen burayı değiştir)
+  const SPECIAL_NOTE =
+    "Gel buraya… sarıl. Ağlayacaksan da birlikte ağlayalım. Ben buradayım.";
+
+  document.getElementById("note").firstChild.textContent = SPECIAL_NOTE;
+
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+  function getCenter(el){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width/2, y: r.top + r.height/2, w:r.width, h:r.height };
+  }
+
+  function updateHugState(){
+    const a = getCenter(p1);
+    const b = getCenter(p2);
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    const dist = Math.hypot(dx, dy);
+
+    // sarılma eşiği: iki dairenin neredeyse değmesi
+    const threshold = (a.w/2 + b.w/2) * 0.78;
+
+    if(dist < threshold){
+      heart.classList.add("show");
+    }else{
+      heart.classList.remove("show");
+    }
+  }
+
+  function makeDraggable(el){
+    let pointerId = null;
+    let offsetX = 0, offsetY = 0;
+
+    el.addEventListener("pointerdown", (e) => {
+      pointerId = e.pointerId;
+      el.setPointerCapture(pointerId);
+      const r = el.getBoundingClientRect();
+      offsetX = e.clientX - r.left;
+      offsetY = e.clientY - r.top;
+    });
+
+    el.addEventListener("pointermove", (e) => {
+      if(pointerId !== e.pointerId) return;
+
+      const stageR = stage.getBoundingClientRect();
+      const elR = el.getBoundingClientRect();
+
+      const x = e.clientX - stageR.left - offsetX;
+      const y = e.clientY - stageR.top  - offsetY;
+
+      const maxX = stageR.width - elR.width;
+      const maxY = stageR.height - elR.height;
+
+      el.style.left = clamp(x, 0, maxX) + "px";
+      el.style.top  = clamp(y, 0, maxY) + "px";
+
+      updateHugState();
+    });
+
+    el.addEventListener("pointerup", (e) => {
+      if(pointerId !== e.pointerId) return;
+      pointerId = null;
+      updateHugState();
+    });
+
+    el.addEventListener("pointercancel", () => {
+      pointerId = null;
+      updateHugState();
+    });
+  }
+
+  makeDraggable(p1);
+  makeDraggable(p2);
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    p1.style.left = "18%";
+    p1.style.top  = "48%";
+    p2.style.left = "66%";
+    p2.style.top  = "48%";
+    setTimeout(updateHugState, 50);
+  });
+
+  // ilk durum
+  updateHugState();
+  window.addEventListener("resize", () => updateHugState());
+</script>
+</body>
+</html>
